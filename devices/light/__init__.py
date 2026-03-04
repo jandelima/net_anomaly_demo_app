@@ -1,0 +1,2 @@
+"""Light simulated device."""
+

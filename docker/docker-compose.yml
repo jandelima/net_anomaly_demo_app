@@ -1,0 +1,55 @@
+services:
+  hub:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: uvicorn hub.main:app --host 0.0.0.0 --port 8000
+    container_name: smart_home_hub
+    environment:
+      HUB_API_KEY: devkey
+      HUB_LIGHT_URL: http://light:8001
+      HUB_LOCK_URL: http://lock:8002
+      HUB_THERMOSTAT_URL: http://thermostat:8003
+      HUB_LOG_TO_FILE: "1"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../data:/app/data
+    depends_on:
+      - light
+      - lock
+      - thermostat
+
+  light:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: uvicorn devices.light.main:app --host 0.0.0.0 --port 8001
+    container_name: smart_home_light
+    environment:
+      HUB_URL: http://hub:8000
+    ports:
+      - "8001:8001"
+
+  lock:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: uvicorn devices.lock.main:app --host 0.0.0.0 --port 8002
+    container_name: smart_home_lock
+    environment:
+      HUB_URL: http://hub:8000
+    ports:
+      - "8002:8002"
+
+  thermostat:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: uvicorn devices.thermostat.main:app --host 0.0.0.0 --port 8003
+    container_name: smart_home_thermostat
+    environment:
+      HUB_URL: http://hub:8000
+    ports:
+      - "8003:8003"
+
