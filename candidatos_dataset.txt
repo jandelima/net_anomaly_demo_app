@@ -1,0 +1,10 @@
+bidirectional_first_seen_ms
+bidirectional_duration_ms
+bidirectional_packets
+bidirectional_bytes
+src2dst_packets
+src2dst_bytes
+dst2src_packets
+dst2src_bytes
+protocol
+dst_port
