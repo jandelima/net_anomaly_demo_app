@@ -182,6 +182,21 @@ def wait_for_process(process: subprocess.Popen[str], timeout_seconds: float, nam
     return stdout, stderr
 
 
+def stream_progress(
+    process: subprocess.Popen[str],
+    label: str,
+    heartbeat_seconds: float = 30.0,
+) -> None:
+    started = time.monotonic()
+    next_heartbeat = heartbeat_seconds
+    while process.poll() is None:
+        elapsed = time.monotonic() - started
+        if elapsed >= next_heartbeat:
+            print(f"[progresso] {label} ainda em execução... {int(elapsed)}s decorridos")
+            next_heartbeat += heartbeat_seconds
+        time.sleep(1.0)
+
+
 def run_benign_generator(
     hub_url: str,
     api_key: str,
@@ -204,16 +219,18 @@ def run_benign_generator(
     ]
     if seed is not None:
         cmd.extend(["--seed", str(seed)])
-    completed = subprocess.run(cmd, cwd=PROJECT_ROOT, check=False, text=True, capture_output=True)
-    if completed.returncode != 0:
+    process = subprocess.Popen(cmd, cwd=PROJECT_ROOT, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stream_progress(process, "Gerador benigno")
+    stdout, stderr = wait_for_process(process, timeout_seconds=max(5.0, duration_seconds + 10.0), name="gerador benigno")
+    if process.returncode != 0:
         raise RuntimeError(
             "Gerador benigno falhou.\n"
             f"Comando: {' '.join(cmd)}\n"
-            f"stdout: {completed.stdout}\n"
-            f"stderr: {completed.stderr}"
+            f"stdout: {stdout}\n"
+            f"stderr: {stderr}"
         )
-    print(completed.stdout, end="")
-    return completed.stdout, completed.stderr
+    print(stdout, end="")
+    return stdout, stderr
 
 
 def write_metadata(metadata_path: Path, payload: dict[str, Any]) -> None:
@@ -268,7 +285,9 @@ def collect_benign_run(
     generator_stderr = ""
 
     try:
+        print("[1/5] Iniciando tcpdump...")
         tcpdump_process = start_tcpdump(interface, tcpdump_filter, paths["pcap_path"])
+        print("[2/5] Iniciando monitor live canônico...")
         monitor_process = start_live_monitor(
             interface=interface,
             output_dir=output_dir,
@@ -281,7 +300,9 @@ def collect_benign_run(
             active_timeout_seconds=active_timeout_seconds,
         )
         if warmup_seconds > 0:
+            print(f"[3/5] Warmup de {warmup_seconds:.1f}s antes do gerador benigno...")
             time.sleep(warmup_seconds)
+        print(f"[4/5] Rodando gerador benigno por {duration_seconds}s...")
         generator_stdout, generator_stderr = run_benign_generator(
             hub_url=hub_url,
             api_key=api_key,
@@ -296,6 +317,8 @@ def collect_benign_run(
     if monitor_process is None:
         raise RuntimeError("Monitor live nao foi iniciado.")
 
+    print("[5/5] Aguardando finalização do monitor live...")
+    stream_progress(monitor_process, "Monitor live")
     monitor_stdout, monitor_stderr = wait_for_process(
         monitor_process,
         timeout_seconds=max(5.0, total_monitor_duration + 5.0),

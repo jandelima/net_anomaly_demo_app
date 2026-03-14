@@ -4,6 +4,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import call
 from unittest.mock import patch
 
 
@@ -58,7 +59,8 @@ class CollectBenignFlowDatasetTests(unittest.TestCase):
                 patch.object(collect, "start_live_monitor", return_value=fake_monitor_process) as start_live_monitor, \
                 patch.object(collect, "run_benign_generator", return_value=("generator done", "")) as run_benign_generator, \
                 patch.object(collect, "stop_tcpdump", return_value="tcpdump done") as stop_tcpdump, \
-                patch.object(collect, "wait_for_process", return_value=("monitor done", "")) as wait_for_process:
+                patch.object(collect, "wait_for_process", return_value=("monitor done", "")) as wait_for_process, \
+                patch.object(collect, "stream_progress"):
                 result = collect.collect_benign_run(
                     hub_url="http://localhost:8000",
                     api_key="devkey",
@@ -114,6 +116,53 @@ class CollectBenignFlowDatasetTests(unittest.TestCase):
             self.assertEqual(metadata["generator_stderr"], "")
             self.assertIn("started_at", metadata)
             self.assertIn("finished_at", metadata)
+
+    def test_collect_benign_run_prints_progress_updates(self) -> None:
+        collect = load_collect_module()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            output_dir = Path(tmpdir)
+            fake_tcpdump_process = object()
+            fake_monitor_process = object()
+
+            with patch.object(collect, "ensure_hub_healthy"), \
+                patch.object(collect, "ensure_tcpdump_available"), \
+                patch.object(collect, "build_run_id", return_value="test-run"), \
+                patch.object(collect, "start_tcpdump", return_value=fake_tcpdump_process), \
+                patch.object(collect, "start_live_monitor", return_value=fake_monitor_process), \
+                patch.object(collect, "run_benign_generator", return_value=("generator done", "")), \
+                patch.object(collect, "stop_tcpdump", return_value="tcpdump done"), \
+                patch.object(collect, "wait_for_process", return_value=("monitor done", "")), \
+                patch.object(collect.time, "sleep"), \
+                patch.object(collect, "stream_progress") as stream_progress, \
+                patch.object(collect, "print") as print_mock:
+                collect.collect_benign_run(
+                    hub_url="http://localhost:8000",
+                    api_key="devkey",
+                    duration_seconds=300,
+                    interface="lo",
+                    port_range_start=8000,
+                    port_range_end=9000,
+                    output_dir=output_dir,
+                    seed=42,
+                    request_timeout_seconds=5.0,
+                    warmup_seconds=1.0,
+                    drain_seconds=15.0,
+                    idle_timeout_seconds=5,
+                    active_timeout_seconds=10,
+                )
+
+            print_mock.assert_has_calls(
+                [
+                    call("[1/5] Iniciando tcpdump..."),
+                    call("[2/5] Iniciando monitor live canônico..."),
+                    call("[3/5] Warmup de 1.0s antes do gerador benigno..."),
+                    call("[4/5] Rodando gerador benigno por 300s..."),
+                    call("[5/5] Aguardando finalização do monitor live..."),
+                ],
+                any_order=False,
+            )
+            stream_progress.assert_called_once()
 
 
 if __name__ == "__main__":

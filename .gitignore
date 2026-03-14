@@ -13,3 +13,8 @@ data/app_level/*.csv
 dataset-tools/output/
 !data/firmware/.gitkeep
 !data/logs/.gitkeep
+!data/app_level/*.csv
+!dataset-tools/output/
+dataset-tools/output/*
+!dataset-tools/output/benign_runs/
+!dataset-tools/output/benign_runs/**

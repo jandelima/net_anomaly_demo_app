@@ -1,0 +1,248 @@
+timestamp_ms,is_error,is_auth_failure,path,query_length,query_entropy,request_content_length,response_length,request_preview
+1773523479341,0,0,/health,0,0.0,0,173,GET /health
+1773523481474,0,0,/health,0,0.0,0,173,GET /health
+1773523481492,0,0,/command,0,0.0,78,269,"POST /command {""device_id"":""light_8"",""action"":""turn_on"",""request_id"":""benign-1773523481491""}"
+1773523484850,0,0,/health,0,0.0,0,173,GET /health
+1773523488587,0,0,/command,0,0.0,74,269,"POST /command {""device_id"":""lock_4"",""action"":""lock"",""request_id"":""benign-1773523488586""}"
+1773523490299,0,0,/command,0,0.0,97,612,"POST /command {""device_id"":""thermostat_1"",""action"":""set_temp"",""value"":22.8,""request_id"":""benign-1773523490298""}"
+1773523493482,0,0,/health,0,0.0,0,173,GET /health
+1773523496743,0,0,/state,6,2.585,0,164,GET /state?device_id=lock_5
+1773523499728,0,0,/event,0,0.0,63,11,"POST /event {""device_id"":""light_1"",""event"":""heartbeat"",""value"":{""ok"":true}}"
+1773523502980,0,0,/command,0,0.0,78,269,"POST /command {""device_id"":""light_5"",""action"":""turn_on"",""request_id"":""benign-1773523502979""}"
+1773523506885,0,0,/command,0,0.0,79,272,"POST /command {""device_id"":""light_3"",""action"":""turn_off"",""request_id"":""benign-1773523506883""}"
+1773523508633,0,0,/events,0,0.0,0,108,GET /events?limit=20
+1773523512157,0,0,/health,0,0.0,0,174,GET /health
+1773523515004,0,0,/demo/upload-preview,0,0.0,329,73,POST /demo/upload-preview [multipart]
+1773523515024,0,0,/health,0,0.0,0,174,GET /health
+1773523516642,0,0,/command,0,0.0,79,271,"POST /command {""device_id"":""light_10"",""action"":""turn_on"",""request_id"":""benign-1773523516641""}"
+1773523520291,0,0,/events,0,0.0,0,108,GET /events?limit=10
+1773523522930,0,0,/events,0,0.0,0,108,GET /events?limit=10
+1773523525324,0,0,/health,0,0.0,0,174,GET /health
+1773523528584,0,0,/health,0,0.0,0,174,GET /health
+1773523530267,0,0,/health,0,0.0,0,174,GET /health
+1773523533109,0,0,/command,0,0.0,76,275,"POST /command {""device_id"":""lock_5"",""action"":""unlock"",""request_id"":""benign-1773523533108""}"
+1773523535405,0,0,/demo/search,11,2.6635,0,146,GET /demo/search?q=door_opened
+1773523537461,0,0,/command,0,0.0,78,269,"POST /command {""device_id"":""light_2"",""action"":""turn_on"",""request_id"":""benign-1773523537460""}"
+1773523541027,0,0,/event,0,0.0,77,11,"POST /event {""device_id"":""lock_3"",""event"":""door_opened"",""value"":{""source"":""manual_test""}}"
+1773523543059,0,0,/demo/search,12,3.1887,0,240,GET /demo/search?q=thermostat_4
+1773523545097,0,0,/state,6,2.585,0,166,GET /state?device_id=lock_5
+1773523546963,0,0,/command,0,0.0,97,613,"POST /command {""device_id"":""thermostat_2"",""action"":""set_temp"",""value"":22.3,""request_id"":""benign-1773523546962""}"
+1773523550616,0,0,/state,12,3.1887,0,489,GET /state?device_id=thermostat_3
+1773523553123,0,0,/command,0,0.0,79,272,"POST /command {""device_id"":""light_5"",""action"":""turn_off"",""request_id"":""benign-1773523553122""}"
+1773523554858,0,0,/command,0,0.0,78,269,"POST /command {""device_id"":""light_4"",""action"":""turn_on"",""request_id"":""benign-1773523554857""}"
+1773523557935,0,0,/event,0,0.0,62,11,"POST /event {""device_id"":""lock_4"",""event"":""heartbeat"",""value"":{""ok"":true}}"
+1773523560402,0,0,/state,6,2.585,0,165,GET /state?device_id=lock_5
+1773523563234,0,0,/demo/upload-preview,0,0.0,330,73,POST /demo/upload-preview [multipart]
+1773523565592,0,0,/command,0,0.0,79,271,"POST /command {""device_id"":""light_6"",""action"":""turn_off"",""request_id"":""benign-1773523565590""}"
+1773523567109,0,0,/health,0,0.0,0,175,GET /health
+1773523570416,0,0,/demo/upload-preview,0,0.0,328,73,POST /demo/upload-preview [multipart]
+1773523572669,0,0,/health,0,0.0,0,175,GET /health
+1773523575697,0,0,/command,0,0.0,78,269,"POST /command {""device_id"":""light_6"",""action"":""turn_on"",""request_id"":""benign-1773523575696""}"
+1773523578704,0,0,/state,7,2.8074,0,162,GET /state?device_id=light_4
+1773523582536,0,0,/events,0,0.0,0,313,GET /events?limit=20
+1773523584809,0,0,/command,0,0.0,97,613,"POST /command {""device_id"":""thermostat_3"",""action"":""set_temp"",""value"":25.6,""request_id"":""benign-1773523584809""}"
+1773523586733,0,0,/state,7,2.8074,0,163,GET /state?device_id=light_3
+1773523590688,0,0,/state,7,2.8074,0,163,GET /state?device_id=light_5
+1773523592516,0,0,/state,12,3.1887,0,493,GET /state?device_id=thermostat_2
+1773523594436,0,0,/state,12,3.1887,0,490,GET /state?device_id=thermostat_4
+1773523597002,0,0,/command,0,0.0,97,612,"POST /command {""device_id"":""thermostat_2"",""action"":""set_temp"",""value"":24.0,""request_id"":""benign-1773523597001""}"
+1773523600342,0,0,/health,0,0.0,0,175,GET /health
+1773523602845,0,0,/health,0,0.0,0,175,GET /health
+1773523605283,0,0,/firmware,0,0.0,3069,179,POST /firmware [multipart]
+1773523607093,0,0,/command,0,0.0,74,266,"POST /command {""device_id"":""lock_1"",""action"":""lock"",""request_id"":""benign-1773523607092""}"
+1773523610161,0,0,/command,0,0.0,78,269,"POST /command {""device_id"":""light_8"",""action"":""turn_on"",""request_id"":""benign-1773523610160""}"
+1773523611847,0,0,/health,0,0.0,0,175,GET /health
+1773523613925,0,0,/demo/search,12,3.1887,0,240,GET /demo/search?q=thermostat_4
+1773523615608,0,0,/command,0,0.0,74,267,"POST /command {""device_id"":""lock_6"",""action"":""lock"",""request_id"":""benign-1773523615607""}"
+1773523618530,0,0,/health,0,0.0,0,175,GET /health
+1773523622242,0,0,/state,7,2.8074,0,162,GET /state?device_id=light_8
+1773523625713,0,0,/event,0,0.0,63,11,"POST /event {""device_id"":""light_7"",""event"":""heartbeat"",""value"":{""ok"":true}}"
+1773523627461,0,0,/state,6,2.585,0,164,GET /state?device_id=lock_4
+1773523629997,0,0,/events,0,0.0,0,409,GET /events?limit=10
+1773523630014,0,0,/health,0,0.0,0,176,GET /health
+1773523633522,0,0,/command,0,0.0,78,269,"POST /command {""device_id"":""light_7"",""action"":""turn_on"",""request_id"":""benign-1773523633521""}"
+1773523636371,0,0,/command,0,0.0,79,272,"POST /command {""device_id"":""light_6"",""action"":""turn_off"",""request_id"":""benign-1773523636370""}"
+1773523639036,0,0,/events,0,0.0,0,409,GET /events?limit=10
+1773523642563,0,0,/events,0,0.0,0,409,GET /events?limit=10
+1773523645700,0,0,/state,7,2.8074,0,163,GET /state?device_id=light_1
+1773523649633,0,0,/demo/search,6,2.585,0,222,GET /demo/search?q=lock_6
+1773523651556,0,0,/state,7,2.8074,0,162,GET /state?device_id=light_7
+1773523655227,0,0,/demo/search,6,2.585,0,222,GET /demo/search?q=lock_1
+1773523657681,0,0,/demo/upload-preview,0,0.0,330,73,POST /demo/upload-preview [multipart]
+1773523661582,0,0,/demo/upload-preview,0,0.0,653,73,POST /demo/upload-preview [multipart]
+1773523665513,0,0,/state,12,3.1887,0,494,GET /state?device_id=thermostat_2
+1773523667174,0,0,/command,0,0.0,79,272,"POST /command {""device_id"":""light_2"",""action"":""turn_off"",""request_id"":""benign-1773523667173""}"
+1773523667196,0,0,/demo/search,8,3.0,0,228,GET /demo/search?q=light_10
+1773523670832,0,0,/command,0,0.0,78,269,"POST /command {""device_id"":""light_3"",""action"":""turn_on"",""request_id"":""benign-1773523670831""}"
+1773523673350,0,0,/demo/search,18,3.0169,0,160,GET /demo/search?q=temperature_update
+1773523675472,0,0,/state,12,3.1887,0,490,GET /state?device_id=thermostat_4
+1773523677185,0,0,/health,0,0.0,0,176,GET /health
+1773523680104,0,0,/command,0,0.0,78,269,"POST /command {""device_id"":""light_9"",""action"":""turn_on"",""request_id"":""benign-1773523680103""}"
+1773523683289,0,0,/command,0,0.0,79,272,"POST /command {""device_id"":""light_9"",""action"":""turn_off"",""request_id"":""benign-1773523683288""}"
+1773523685124,0,0,/health,0,0.0,0,176,GET /health
+1773523687773,0,0,/demo/search,8,3.0,0,228,GET /demo/search?q=light_10
+1773523689302,0,0,/health,0,0.0,0,176,GET /health
+1773523692216,0,0,/command,0,0.0,97,613,"POST /command {""device_id"":""thermostat_2"",""action"":""set_temp"",""value"":19.7,""request_id"":""benign-1773523692215""}"
+1773523694571,0,0,/demo/search,8,3.0,0,228,GET /demo/search?q=light_10
+1773523698278,0,0,/command,0,0.0,79,272,"POST /command {""device_id"":""light_6"",""action"":""turn_off"",""request_id"":""benign-1773523698277""}"
+1773523701873,0,0,/health,0,0.0,0,176,GET /health
+1773523704909,0,0,/demo/upload-preview,0,0.0,335,73,POST /demo/upload-preview [multipart]
+1773523706674,0,0,/events,0,0.0,0,409,GET /events?limit=10
+1773523710405,0,0,/event,0,0.0,76,11,"POST /event {""device_id"":""light_5"",""event"":""motion_detected"",""value"":{""zone"":""kitchen""}}"
+1773523713424,0,0,/health,0,0.0,0,176,GET /health
+1773523715437,0,0,/health,0,0.0,0,176,GET /health
+1773523717602,0,0,/state,7,2.8074,0,163,GET /state?device_id=light_2
+1773523719340,0,0,/state,7,2.8074,0,163,GET /state?device_id=light_9
+1773523719361,0,0,/demo/upload-preview,0,0.0,335,73,POST /demo/upload-preview [multipart]
+1773523729279,0,0,/demo/search,6,2.585,0,222,GET /demo/search?q=lock_1
+1773523746576,0,0,/events,0,0.0,0,518,GET /events?limit=10
+1773523768790,0,0,/events,0,0.0,0,518,GET /events?limit=20
+1773523770821,0,0,/command,0,0.0,79,272,"POST /command {""device_id"":""light_4"",""action"":""turn_off"",""request_id"":""benign-1773523770820""}"
+1773523774281,0,0,/firmware,0,0.0,2884,179,POST /firmware [multipart]
+1773523778223,0,0,/event,0,0.0,63,11,"POST /event {""device_id"":""light_8"",""event"":""heartbeat"",""value"":{""ok"":true}}"
+1773523782172,0,0,/event,0,0.0,62,11,"POST /event {""device_id"":""lock_4"",""event"":""heartbeat"",""value"":{""ok"":true}}"
+1773523784126,0,0,/demo/search,9,2.5033,0,917,GET /demo/search?q=heartbeat
+1773523787639,0,0,/events,0,0.0,0,709,GET /events?limit=20
+1773523789812,0,0,/event,0,0.0,74,11,"POST /event {""device_id"":""light_4"",""event"":""motion_detected"",""value"":{""zone"":""entry""}}"
+1773523793466,0,0,/command,0,0.0,76,273,"POST /command {""device_id"":""lock_5"",""action"":""unlock"",""request_id"":""benign-1773523793465""}"
+1773523795811,0,0,/event,0,0.0,63,11,"POST /event {""device_id"":""light_8"",""event"":""heartbeat"",""value"":{""ok"":true}}"
+1773523797375,0,0,/command,0,0.0,76,273,"POST /command {""device_id"":""lock_1"",""action"":""unlock"",""request_id"":""benign-1773523797374""}"
+1773523801108,0,0,/demo/search,12,3.1887,0,240,GET /demo/search?q=thermostat_1
+1773523803492,0,0,/state,12,3.1887,0,494,GET /state?device_id=thermostat_2
+1773523805828,0,0,/command,0,0.0,78,269,"POST /command {""device_id"":""light_9"",""action"":""turn_on"",""request_id"":""benign-1773523805827""}"
+1773523808789,0,0,/demo/upload-preview,0,0.0,335,73,POST /demo/upload-preview [multipart]
+1773523812262,0,0,/state,12,3.1887,0,494,GET /state?device_id=thermostat_1
+1773523814060,0,0,/firmware,0,0.0,1998,179,POST /firmware [multipart]
+1773523816203,0,0,/health,0,0.0,0,177,GET /health
+1773523817712,0,0,/demo/search,11,2.6635,0,317,GET /demo/search?q=door_opened
+1773523820937,0,0,/demo/search,6,2.585,0,222,GET /demo/search?q=lock_6
+1773523823354,0,0,/command,0,0.0,76,274,"POST /command {""device_id"":""lock_1"",""action"":""unlock"",""request_id"":""benign-1773523823353""}"
+1773523826645,0,0,/command,0,0.0,80,274,"POST /command {""device_id"":""light_10"",""action"":""turn_off"",""request_id"":""benign-1773523826644""}"
+1773523829822,0,0,/command,0,0.0,79,271,"POST /command {""device_id"":""light_10"",""action"":""turn_on"",""request_id"":""benign-1773523829820""}"
+1773523831809,0,0,/health,0,0.0,0,177,GET /health
+1773523834262,0,0,/event,0,0.0,76,11,"POST /event {""device_id"":""light_6"",""event"":""motion_detected"",""value"":{""zone"":""kitchen""}}"
+1773523837137,0,0,/command,0,0.0,79,271,"POST /command {""device_id"":""light_10"",""action"":""turn_on"",""request_id"":""benign-1773523837136""}"
+1773523839721,0,0,/state,6,2.585,0,166,GET /state?device_id=lock_1
+1773523842393,0,0,/state,7,2.8074,0,162,GET /state?device_id=light_7
+1773523845179,0,0,/event,0,0.0,63,11,"POST /event {""device_id"":""light_6"",""event"":""heartbeat"",""value"":{""ok"":true}}"
+1773523847394,0,0,/health,0,0.0,0,178,GET /health
+1773523850448,0,0,/command,0,0.0,79,272,"POST /command {""device_id"":""light_8"",""action"":""turn_off"",""request_id"":""benign-1773523850447""}"
+1773523852518,0,0,/command,0,0.0,78,269,"POST /command {""device_id"":""light_1"",""action"":""turn_on"",""request_id"":""benign-1773523852517""}"
+1773523854638,0,0,/state,7,2.8074,0,162,GET /state?device_id=light_3
+1773523857287,0,0,/firmware,0,0.0,3577,179,POST /firmware [multipart]
+1773523859279,0,0,/health,0,0.0,0,178,GET /health
+1773523862020,0,0,/command,0,0.0,78,269,"POST /command {""device_id"":""light_1"",""action"":""turn_on"",""request_id"":""benign-1773523862019""}"
+1773523865476,0,0,/command,0,0.0,97,613,"POST /command {""device_id"":""thermostat_1"",""action"":""set_temp"",""value"":21.7,""request_id"":""benign-1773523865475""}"
+1773523868669,0,0,/demo/search,8,3.0,0,228,GET /demo/search?q=light_10
+1773523871317,0,0,/event,0,0.0,79,11,"POST /event {""device_id"":""thermostat_1"",""event"":""temperature_update"",""value"":{""temp"":25.6}}"
+1773523875053,0,0,/state,12,3.1887,0,494,GET /state?device_id=thermostat_1
+1773523877628,0,0,/demo/search,15,3.0062,0,658,GET /demo/search?q=motion_detected
+1773523881379,0,0,/event,0,0.0,79,11,"POST /event {""device_id"":""lock_6"",""event"":""door_opened"",""value"":{""source"":""routine_check""}}"
+1773523884765,0,0,/events,0,0.0,0,1040,GET /events?limit=10
+1773523888217,0,0,/state,7,2.8074,0,163,GET /state?device_id=light_8
+1773523890412,0,0,/command,0,0.0,79,271,"POST /command {""device_id"":""light_10"",""action"":""turn_on"",""request_id"":""benign-1773523890411""}"
+1773523892599,0,0,/command,0,0.0,97,613,"POST /command {""device_id"":""thermostat_2"",""action"":""set_temp"",""value"":18.6,""request_id"":""benign-1773523892598""}"
+1773523894670,0,0,/state,7,2.8074,0,163,GET /state?device_id=light_5
+1773523897946,0,0,/command,0,0.0,76,273,"POST /command {""device_id"":""lock_4"",""action"":""unlock"",""request_id"":""benign-1773523897945""}"
+1773523900876,0,0,/state,7,2.8074,0,162,GET /state?device_id=light_7
+1773523904468,0,0,/state,12,3.1887,0,494,GET /state?device_id=thermostat_3
+1773523908343,0,0,/command,0,0.0,97,612,"POST /command {""device_id"":""thermostat_3"",""action"":""set_temp"",""value"":21.0,""request_id"":""benign-1773523908342""}"
+1773523910018,0,0,/command,0,0.0,76,275,"POST /command {""device_id"":""lock_3"",""action"":""unlock"",""request_id"":""benign-1773523910017""}"
+1773523913009,0,0,/health,0,0.0,0,178,GET /health
+1773523916515,0,0,/firmware,0,0.0,3219,179,POST /firmware [multipart]
+1773523916534,0,0,/command,0,0.0,74,268,"POST /command {""device_id"":""lock_3"",""action"":""lock"",""request_id"":""benign-1773523916532""}"
+1773523916691,0,0,/state,6,2.585,0,164,GET /state?device_id=lock_3
+1773523917488,0,0,/health,0,0.0,0,178,GET /health
+1773523917776,0,0,/state,6,2.585,0,166,GET /state?device_id=lock_5
+1773523918162,0,0,/command,0,0.0,74,267,"POST /command {""device_id"":""lock_1"",""action"":""lock"",""request_id"":""benign-1773523918161""}"
+1773523918895,0,0,/command,0,0.0,76,275,"POST /command {""device_id"":""lock_3"",""action"":""unlock"",""request_id"":""benign-1773523918893""}"
+1773523919993,0,0,/events,0,0.0,0,1040,GET /events?limit=10
+1773523920278,0,0,/command,0,0.0,97,613,"POST /command {""device_id"":""thermostat_2"",""action"":""set_temp"",""value"":18.4,""request_id"":""benign-1773523920277""}"
+1773523921698,0,0,/command,0,0.0,78,269,"POST /command {""device_id"":""light_3"",""action"":""turn_on"",""request_id"":""benign-1773523921697""}"
+1773523922661,0,0,/demo/search,6,2.585,0,395,GET /demo/search?q=lock_6
+1773523923705,0,0,/health,0,0.0,0,178,GET /health
+1773523924147,0,0,/state,7,2.8074,0,163,GET /state?device_id=light_4
+1773523924917,0,0,/command,0,0.0,79,272,"POST /command {""device_id"":""light_9"",""action"":""turn_off"",""request_id"":""benign-1773523924916""}"
+1773523925290,0,0,/state,7,2.8074,0,163,GET /state?device_id=light_4
+1773523926274,0,0,/command,0,0.0,79,271,"POST /command {""device_id"":""light_10"",""action"":""turn_on"",""request_id"":""benign-1773523926273""}"
+1773523927059,0,0,/demo/search,18,3.0169,0,333,GET /demo/search?q=temperature_update
+1773523927941,0,0,/demo/search,9,2.5033,0,1227,GET /demo/search?q=heartbeat
+1773523929089,0,0,/command,0,0.0,97,613,"POST /command {""device_id"":""thermostat_3"",""action"":""set_temp"",""value"":23.5,""request_id"":""benign-1773523929088""}"
+1773523930118,0,0,/command,0,0.0,79,271,"POST /command {""device_id"":""light_10"",""action"":""turn_on"",""request_id"":""benign-1773523930117""}"
+1773523931121,0,0,/state,7,2.8074,0,163,GET /state?device_id=light_2
+1773523931674,0,0,/state,6,2.585,0,164,GET /state?device_id=lock_2
+1773523931948,0,0,/health,0,0.0,0,178,GET /health
+1773523932164,0,0,/state,6,2.585,0,164,GET /state?device_id=lock_6
+1773523932475,0,0,/demo/search,15,3.0062,0,658,GET /demo/search?q=motion_detected
+1773523933388,0,0,/state,12,3.1887,0,493,GET /state?device_id=thermostat_1
+1773523934559,0,0,/command,0,0.0,97,612,"POST /command {""device_id"":""thermostat_2"",""action"":""set_temp"",""value"":24.2,""request_id"":""benign-1773523934558""}"
+1773523935357,0,0,/events,0,0.0,0,1040,GET /events?limit=10
+1773523935882,0,0,/command,0,0.0,79,272,"POST /command {""device_id"":""light_3"",""action"":""turn_off"",""request_id"":""benign-1773523935881""}"
+1773523936970,0,0,/command,0,0.0,76,274,"POST /command {""device_id"":""lock_5"",""action"":""unlock"",""request_id"":""benign-1773523936969""}"
+1773523937629,0,0,/state,6,2.585,0,164,GET /state?device_id=lock_1
+1773523938016,0,0,/command,0,0.0,79,272,"POST /command {""device_id"":""light_9"",""action"":""turn_off"",""request_id"":""benign-1773523938015""}"
+1773523938501,0,0,/state,7,2.8074,0,163,GET /state?device_id=light_9
+1773523939263,0,0,/state,7,2.8074,0,162,GET /state?device_id=light_7
+1773523939555,0,0,/health,0,0.0,0,178,GET /health
+1773523940247,0,0,/event,0,0.0,79,11,"POST /event {""device_id"":""lock_6"",""event"":""door_opened"",""value"":{""source"":""routine_check""}}"
+1773523941243,0,0,/command,0,0.0,79,271,"POST /command {""device_id"":""light_8"",""action"":""turn_off"",""request_id"":""benign-1773523941242""}"
+1773523942141,0,0,/command,0,0.0,97,612,"POST /command {""device_id"":""thermostat_3"",""action"":""set_temp"",""value"":21.0,""request_id"":""benign-1773523942140""}"
+1773523943067,0,0,/command,0,0.0,97,612,"POST /command {""device_id"":""thermostat_2"",""action"":""set_temp"",""value"":20.6,""request_id"":""benign-1773523943066""}"
+1773523944255,0,0,/command,0,0.0,78,269,"POST /command {""device_id"":""light_9"",""action"":""turn_on"",""request_id"":""benign-1773523944254""}"
+1773523944582,0,0,/command,0,0.0,78,269,"POST /command {""device_id"":""light_4"",""action"":""turn_on"",""request_id"":""benign-1773523944581""}"
+1773523944979,0,0,/health,0,0.0,0,178,GET /health
+1773523945460,0,0,/state,12,3.1887,0,494,GET /state?device_id=thermostat_1
+1773523945479,0,0,/command,0,0.0,74,268,"POST /command {""device_id"":""lock_2"",""action"":""lock"",""request_id"":""benign-1773523945478""}"
+1773523946111,0,0,/health,0,0.0,0,178,GET /health
+1773523946441,0,0,/command,0,0.0,79,272,"POST /command {""device_id"":""light_2"",""action"":""turn_off"",""request_id"":""benign-1773523946440""}"
+1773523947345,0,0,/command,0,0.0,74,267,"POST /command {""device_id"":""lock_6"",""action"":""lock"",""request_id"":""benign-1773523947344""}"
+1773523948500,0,0,/state,6,2.585,0,164,GET /state?device_id=lock_6
+1773523949184,0,0,/command,0,0.0,79,272,"POST /command {""device_id"":""light_2"",""action"":""turn_off"",""request_id"":""benign-1773523949183""}"
+1773523950333,0,0,/state,7,2.8074,0,163,GET /state?device_id=light_3
+1773523950940,0,0,/command,0,0.0,78,269,"POST /command {""device_id"":""light_2"",""action"":""turn_on"",""request_id"":""benign-1773523950939""}"
+1773523951297,0,0,/state,8,3.0,0,164,GET /state?device_id=light_10
+1773523951589,0,0,/command,0,0.0,97,613,"POST /command {""device_id"":""thermostat_2"",""action"":""set_temp"",""value"":24.1,""request_id"":""benign-1773523951588""}"
+1773523952612,0,0,/event,0,0.0,76,11,"POST /event {""device_id"":""light_8"",""event"":""motion_detected"",""value"":{""zone"":""kitchen""}}"
+1773523953725,0,0,/command,0,0.0,97,613,"POST /command {""device_id"":""thermostat_3"",""action"":""set_temp"",""value"":25.9,""request_id"":""benign-1773523953724""}"
+1773523954428,0,0,/health,0,0.0,0,178,GET /health
+1773523955242,0,0,/event,0,0.0,63,11,"POST /event {""device_id"":""light_7"",""event"":""heartbeat"",""value"":{""ok"":true}}"
+1773523955709,0,0,/command,0,0.0,78,269,"POST /command {""device_id"":""light_8"",""action"":""turn_on"",""request_id"":""benign-1773523955708""}"
+1773523956468,0,0,/command,0,0.0,76,275,"POST /command {""device_id"":""lock_4"",""action"":""unlock"",""request_id"":""benign-1773523956467""}"
+1773523957487,0,0,/state,7,2.8074,0,162,GET /state?device_id=light_2
+1773523957924,0,0,/health,0,0.0,0,178,GET /health
+1773523958830,0,0,/state,7,2.8074,0,162,GET /state?device_id=light_8
+1773523959960,0,0,/event,0,0.0,68,11,"POST /event {""device_id"":""thermostat_3"",""event"":""heartbeat"",""value"":{""ok"":true}}"
+1773523960589,0,0,/state,7,2.8074,0,163,GET /state?device_id=light_5
+1773523961704,0,0,/events,0,0.0,0,1062,GET /events?limit=10
+1773523962073,0,0,/command,0,0.0,97,613,"POST /command {""device_id"":""thermostat_3"",""action"":""set_temp"",""value"":25.4,""request_id"":""benign-1773523962072""}"
+1773523963020,0,0,/state,8,3.0,0,164,GET /state?device_id=light_10
+1773523963926,0,0,/demo/search,11,2.6635,0,659,GET /demo/search?q=door_opened
+1773523964670,0,0,/state,12,3.1887,0,490,GET /state?device_id=thermostat_4
+1773523964915,0,0,/state,6,2.585,0,164,GET /state?device_id=lock_1
+1773523965725,0,0,/command,0,0.0,78,269,"POST /command {""device_id"":""light_8"",""action"":""turn_on"",""request_id"":""benign-1773523965724""}"
+1773523966931,0,0,/health,0,0.0,0,178,GET /health
+1773523967404,0,0,/command,0,0.0,79,272,"POST /command {""device_id"":""light_6"",""action"":""turn_off"",""request_id"":""benign-1773523967403""}"
+1773523968129,0,0,/state,7,2.8074,0,162,GET /state?device_id=light_9
+1773523968516,0,0,/state,6,2.585,0,164,GET /state?device_id=lock_6
+1773523969691,0,0,/state,6,2.585,0,166,GET /state?device_id=lock_4
+1773523970232,0,0,/health,0,0.0,0,178,GET /health
+1773523971293,0,0,/command,0,0.0,76,273,"POST /command {""device_id"":""lock_6"",""action"":""unlock"",""request_id"":""benign-1773523971292""}"
+1773523971367,0,0,/command,0,0.0,79,272,"POST /command {""device_id"":""light_3"",""action"":""turn_off"",""request_id"":""benign-1773523971366""}"
+1773523983676,0,0,/command,0,0.0,74,267,"POST /command {""device_id"":""lock_3"",""action"":""lock"",""request_id"":""benign-1773523983674""}"
+1773524002944,0,0,/state,6,2.585,0,166,GET /state?device_id=lock_4
+1773524011881,0,0,/state,12,3.1887,0,490,GET /state?device_id=thermostat_4
+1773524032770,0,0,/health,0,0.0,0,178,GET /health
+1773524032787,0,0,/demo/search,15,3.0062,0,826,GET /demo/search?q=motion_detected
+1773524055790,0,0,/state,7,2.8074,0,162,GET /state?device_id=light_1
+1773524080365,0,0,/state,7,2.8074,0,162,GET /state?device_id=light_8
+1773524080388,0,0,/state,7,2.8074,0,161,GET /state?device_id=light_8
+1773524080412,0,0,/command,0,0.0,79,271,"POST /command {""device_id"":""light_5"",""action"":""turn_off"",""request_id"":""benign-1773524080408""}"
+1773524080433,0,0,/state,6,2.585,0,166,GET /state?device_id=lock_6
+1773524080454,0,0,/state,12,3.1887,0,489,GET /state?device_id=thermostat_4
+1773524080476,0,0,/command,0,0.0,76,274,"POST /command {""device_id"":""lock_4"",""action"":""unlock"",""request_id"":""benign-1773524080475""}"
+1773524080642,0,0,/command,0,0.0,80,274,"POST /command {""device_id"":""light_10"",""action"":""turn_off"",""request_id"":""benign-1773524080640""}"
+1773524080664,0,0,/command,0,0.0,97,613,"POST /command {""device_id"":""thermostat_2"",""action"":""set_temp"",""value"":21.0,""request_id"":""benign-1773524080662""}"
+1773524080931,0,0,/command,0,0.0,74,267,"POST /command {""device_id"":""lock_3"",""action"":""lock"",""request_id"":""benign-1773524080930""}"
+1773524081049,0,0,/state,6,2.585,0,163,GET /state?device_id=lock_3
+1773524081070,0,0,/demo/upload-preview,0,0.0,334,73,POST /demo/upload-preview [multipart]
+1773524081090,0,0,/state,12,3.1887,0,493,GET /state?device_id=thermostat_1
