@@ -1,6 +1,7 @@
 .venv/
 docs/plans/
 __pycache__/
+**/__pycache__/
 *.pyc
 *.pyo
 *.pyd
@@ -8,5 +9,7 @@ __pycache__/
 .mypy_cache/
 data/logs/*.jsonl
 data/firmware/*
+data/app_level/*.csv
+dataset-tools/output/
 !data/firmware/.gitkeep
 !data/logs/.gitkeep

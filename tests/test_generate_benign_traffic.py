@@ -3,6 +3,7 @@ import subprocess
 import importlib.util
 import sys
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 from random import Random
 
@@ -117,6 +118,68 @@ class GenerateBenignTrafficTests(unittest.TestCase):
         self.assertIn("note", field_names)
         attachment_fields = [field for field in spec.multipart_fields if field[0] == "attachment"]
         self.assertLessEqual(len(attachment_fields), 1)
+
+
+class _FakeClock:
+    def __init__(self) -> None:
+        self.now = 0.0
+
+    def monotonic(self) -> float:
+        return self.now
+
+    async def sleep(self, seconds: float) -> None:
+        self.now += seconds
+
+
+class _FakeResponse:
+    def raise_for_status(self) -> None:
+        return None
+
+
+class _FakeAsyncClient:
+    def __init__(self, clock: _FakeClock, timeout: float) -> None:
+        self.clock = clock
+        self.timeout = timeout
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc, tb) -> None:
+        return None
+
+    async def get(self, url: str):
+        return _FakeResponse()
+
+
+class GenerateBenignTrafficAsyncTests(unittest.IsolatedAsyncioTestCase):
+    async def test_run_benign_traffic_recreates_client_for_each_non_idle_mode(self) -> None:
+        clock = _FakeClock()
+        created_clients = []
+        request_client_ids = []
+
+        def client_factory(*, timeout: float):
+            client = _FakeAsyncClient(clock, timeout)
+            created_clients.append(client)
+            return client
+
+        async def fake_send_request(client, hub_url, request_spec):
+            del hub_url, request_spec
+            request_client_ids.append(id(client))
+            clock.now += 0.011
+            return 200
+
+        with patch.object(generator.httpx, 'AsyncClient', side_effect=client_factory),             patch.object(generator, 'sample_mode', side_effect=['normal', 'busy', 'idle']),             patch.object(generator, 'sample_duration_seconds', side_effect=[0.01, 0.01, 0.02]),             patch.object(generator, 'sample_interval_seconds', return_value=1.0),             patch.object(generator, 'send_request', side_effect=fake_send_request),             patch.object(generator.time, 'monotonic', side_effect=clock.monotonic),             patch.object(generator.asyncio, 'sleep', side_effect=clock.sleep):
+            metrics = await generator.run_benign_traffic(
+                hub_url='http://localhost:8000',
+                api_key='devkey',
+                duration_seconds=0.03,
+                request_timeout_seconds=5.0,
+                seed=7,
+            )
+
+        self.assertEqual(metrics.total_requests, 2)
+        self.assertEqual(len(set(request_client_ids)), 2)
+        self.assertEqual(len(created_clients), 3)
 
 
 if __name__ == "__main__":

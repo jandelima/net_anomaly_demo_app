@@ -237,20 +237,21 @@ async def run_benign_traffic(
     metrics = RunMetrics()
     stop_at = time.monotonic() + duration_seconds
 
-    async with httpx.AsyncClient(timeout=request_timeout_seconds) as client:
-        healthcheck = await client.get(f"{hub_url.rstrip('/')}/health")
+    async with httpx.AsyncClient(timeout=request_timeout_seconds) as health_client:
+        healthcheck = await health_client.get(f"{hub_url.rstrip('/')}/health")
         healthcheck.raise_for_status()
 
-        while time.monotonic() < stop_at:
-            mode_name = sample_mode(rng)
-            metrics.mode_counts[mode_name] += 1
-            mode_duration = sample_duration_seconds(rng, mode_name)
-            mode_stop_at = min(stop_at, time.monotonic() + mode_duration)
+    while time.monotonic() < stop_at:
+        mode_name = sample_mode(rng)
+        metrics.mode_counts[mode_name] += 1
+        mode_duration = sample_duration_seconds(rng, mode_name)
+        mode_stop_at = min(stop_at, time.monotonic() + mode_duration)
 
-            if mode_name == "idle":
-                await asyncio.sleep(max(0.0, mode_stop_at - time.monotonic()))
-                continue
+        if mode_name == "idle":
+            await asyncio.sleep(max(0.0, mode_stop_at - time.monotonic()))
+            continue
 
+        async with httpx.AsyncClient(timeout=request_timeout_seconds) as client:
             while time.monotonic() < mode_stop_at:
                 request_spec = build_request_spec(rng, api_key=api_key)
                 metrics.total_requests += 1

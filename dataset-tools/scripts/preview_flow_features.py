@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 """Generate normal traffic for 1 minute and preview NFStream flow features.
 
-This script runs an end-to-end pipeline:
-1) Capture local traffic with tcpdump into a PCAP file.
-2) Generate realistic Smart Home Hub traffic concurrently.
-3) Parse the PCAP with NFStream.
-4) Save all available NFStream flow features to CSV.
+CÓDIGO LEGADO - NÃO USADO
+
+NÃO USAR ESSE
 """
 
 from __future__ import annotations
