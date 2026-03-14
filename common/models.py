@@ -12,6 +12,7 @@ class HubCommandRequest(BaseModel):
 
 
 class DeviceCommandRequest(BaseModel):
+    device_id: str = Field(min_length=1)
     action: str = Field(min_length=1)
     value: Any | None = None
 
@@ -24,5 +25,6 @@ class HubEventRequest(BaseModel):
 
 
 class DeviceEmitEventRequest(BaseModel):
+    device_id: str | None = Field(default=None, min_length=1)
     event: str = Field(min_length=1)
     value: Any | None = None

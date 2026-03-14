@@ -10,12 +10,20 @@ from typing import Any, Annotated
 
 import httpx
 from fastapi import Depends, FastAPI, File, Header, HTTPException, Query, Request, UploadFile
+from fastapi.middleware.wsgi import WSGIMiddleware
 
 from common.config import HubSettings, load_hub_settings
 from common.logging_utils import JsonLineLogger, utc_now_iso
 from common.models import HubCommandRequest, HubEventRequest
 from common.rate_limit import InMemoryRateLimiter
+from common.request_feature_logger import (
+    CsvRequestFeatureLogger,
+    build_request_preview,
+    extract_primary_query_value,
+    shannon_entropy,
+)
 from common.validation import validate_command_for_device
+from hub.demo_flask import create_demo_app
 
 
 @dataclass
@@ -40,6 +48,7 @@ logger = JsonLineLogger(
     log_to_file=settings.log_to_file,
     file_path=settings.log_file_path if settings.log_to_file else None,
 )
+app_feature_logger = CsvRequestFeatureLogger(settings.data_dir / "app_level" / "hub_requests.csv")
 rate_limiter = InMemoryRateLimiter(settings.rate_limit_rpm) if settings.rate_limit_enabled else None
 runtime = HubRuntimeState(
     started_monotonic=time.monotonic(),
@@ -47,7 +56,42 @@ runtime = HubRuntimeState(
     recent_events=deque(maxlen=200),
 )
 
+
+def demo_search_records(query: str) -> dict[str, Any]:
+    normalized = query.strip().lower()
+
+    matching_devices: list[dict[str, str]] = []
+    for device_id, base_url in settings.device_urls.items():
+        searchable = f"{device_id} {base_url}".lower()
+        if not normalized or normalized in searchable:
+            matching_devices.append({"device_id": device_id, "base_url": base_url})
+
+    matching_events: list[dict[str, Any]] = []
+    for event in reversed(runtime.recent_events):
+        serialized = json.dumps(event, ensure_ascii=True).lower()
+        if not normalized or normalized in serialized:
+            matching_events.append(event)
+        if len(matching_events) >= 20:
+            break
+
+    return {
+        "query": query,
+        "matched_devices": matching_devices,
+        "matched_events": matching_events,
+        "total_matched_events": len(matching_events),
+    }
+
+
+def get_device_record(device_id: str) -> dict[str, Any]:
+    device_record = settings.device_inventory.get(device_id)
+    if device_record is None:
+        raise HTTPException(status_code=400, detail=f"Unknown device_id: {device_id}")
+    return device_record
+
+
 app = FastAPI(title="Smart Home Hub PoC", version=settings.version)
+legacy_search_demo_app = create_demo_app(demo_search_records)
+app.mount("/demo", WSGIMiddleware(legacy_search_demo_app))
 
 
 @app.on_event("startup")
@@ -90,8 +134,14 @@ async def forward_request(
 ) -> tuple[float, dict[str, Any]]:
     client: httpx.AsyncClient = request.app.state.http_client
     started = time.perf_counter()
+    request_kwargs: dict[str, Any] = {}
+    if payload is not None:
+        if method.upper() == "GET":
+            request_kwargs["params"] = payload
+        else:
+            request_kwargs["json"] = payload
     try:
-        response = await client.request(method=method, url=url, json=payload)
+        response = await client.request(method=method, url=url, **request_kwargs)
     except (httpx.ConnectError, httpx.ConnectTimeout, httpx.ReadTimeout, httpx.NetworkError) as exc:
         raise HTTPException(
             status_code=502,
@@ -116,7 +166,10 @@ async def forward_request(
 @app.middleware("http")
 async def request_logging_middleware(request: Request, call_next):
     started = time.perf_counter()
+    timestamp_ms = int(time.time() * 1000)
     body_data: dict[str, Any] = {}
+    is_multipart = "multipart/form-data" in request.headers.get("content-type", "").lower()
+    response = None
     if request.method == "POST" and request.url.path in {"/command", "/event"}:
         try:
             parsed = await request.json()
@@ -153,6 +206,37 @@ async def request_logging_middleware(request: Request, call_next):
             if device_id:
                 payload["device_id"] = device_id
         logger.log(payload)
+        try:
+            query = request.url.query
+            primary_query_value = extract_primary_query_value(request.url.path, query)
+            request_content_length = int(request.headers.get("content-length", "0") or "0")
+            response_length_header = response.headers.get("content-length") if response is not None else None
+            if response_length_header is not None:
+                response_length = int(response_length_header)
+            else:
+                response_body = getattr(response, "body", b"") if response is not None else b""
+                response_length = len(response_body or b"")
+            app_feature_logger.log(
+                {
+                    "timestamp_ms": timestamp_ms,
+                    "is_error": int(status_code >= 400),
+                    "is_auth_failure": int(status_code == 401),
+                    "path": request.url.path,
+                    "query_length": len(primary_query_value),
+                    "query_entropy": shannon_entropy(primary_query_value),
+                    "request_content_length": request_content_length,
+                    "response_length": response_length,
+                    "request_preview": build_request_preview(
+                        method=request.method,
+                        path=request.url.path,
+                        query=query,
+                        body_data=body_data,
+                        is_multipart=is_multipart,
+                    ),
+                }
+            )
+        except Exception:
+            pass
 
 
 @app.get("/health")
@@ -180,16 +264,21 @@ async def command(
     __: None = Depends(apply_rate_limit),
 ) -> dict[str, Any]:
     runtime.counters.commands_received += 1
-    validation_error = validate_command_for_device(command_request.device_id, command_request.action)
+    validation_error = validate_command_for_device(
+        settings.device_inventory,
+        command_request.device_id,
+        command_request.action,
+    )
     if validation_error is not None:
         raise HTTPException(status_code=400, detail=validation_error)
 
     if command_request.action == "set_temp" and command_request.value is None:
         raise HTTPException(status_code=400, detail="Field 'value' is required for action 'set_temp'")
 
-    device_url = settings.device_urls[command_request.device_id]
+    device_record = get_device_record(command_request.device_id)
+    device_url = device_record["base_url"]
     forwarded_to = f"{device_url}/command"
-    body: dict[str, Any] = {"action": command_request.action}
+    body: dict[str, Any] = {"device_id": command_request.device_id, "action": command_request.action}
     if command_request.value is not None:
         body["value"] = command_request.value
 
@@ -212,10 +301,10 @@ async def state(
     __: None = Depends(apply_rate_limit),
 ) -> dict[str, Any]:
     runtime.counters.states_queried += 1
-    if device_id not in settings.device_urls:
-        raise HTTPException(status_code=400, detail=f"Unknown device_id: {device_id}")
-    forwarded_to = f"{settings.device_urls[device_id]}/state"
-    latency_ms, device_state = await forward_request(request, "GET", forwarded_to)
+    device_record = get_device_record(device_id)
+    forwarded_to = f"{device_record['base_url']}/state"
+    payload = {"device_id": device_id}
+    latency_ms, device_state = await forward_request(request, "GET", forwarded_to, payload)
     return {
         "ok": True,
         "device_id": device_id,

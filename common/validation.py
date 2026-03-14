@@ -1,17 +1,17 @@
 from __future__ import annotations
 
-DEVICE_ACTIONS: dict[str, set[str]] = {
-    "light_1": {"turn_on", "turn_off"},
-    "lock_1": {"lock", "unlock"},
-    "thermostat_1": {"set_temp"},
-}
+from typing import Any
 
 
-def validate_command_for_device(device_id: str, action: str) -> str | None:
-    allowed_actions = DEVICE_ACTIONS.get(device_id)
-    if allowed_actions is None:
+def validate_command_for_device(
+    device_inventory: dict[str, dict[str, Any]],
+    device_id: str,
+    action: str,
+) -> str | None:
+    device = device_inventory.get(device_id)
+    if device is None:
         return f"Unknown device_id: {device_id}"
+    allowed_actions = device["actions"]
     if action not in allowed_actions:
         return f"Action '{action}' is not valid for device '{device_id}'"
     return None
-

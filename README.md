@@ -4,9 +4,9 @@ PoC leve para demo de detecção de anomalias de rede em ambiente de Smart Home,
 
 Componentes:
 - `hub/`: orquestrador FastAPI (autenticação, proxy para devices, eventos, upload firmware, logs JSON).
-- `devices/light/`: dispositivo simulado de luz.
-- `devices/lock/`: dispositivo simulado de fechadura.
-- `devices/thermostat/`: dispositivo simulado de termostato.
+- `devices/light/`: serviço de luzes simuladas, controlando múltiplas instâncias lógicas.
+- `devices/lock/`: serviço de fechaduras simuladas, controlando múltiplas instâncias lógicas.
+- `devices/thermostat/`: serviço de termostatos simulados, controlando múltiplas instâncias lógicas.
 - `common/`: utilitários compartilhados (config, modelos, logging, rate limit).
 
 ## Estrutura
@@ -32,6 +32,16 @@ smart-home-hub-poc/
 - Light: `8001`
 - Lock: `8002`
 - Thermostat: `8003`
+
+## Inventário lógico padrão
+
+O hub já sobe com um inventário estático de devices lógicos:
+
+- Lights: `light_1` a `light_10`
+- Locks: `lock_1` a `lock_6`
+- Thermostats: `thermostat_1` a `thermostat_4`
+
+Cada serviço (`light`, `lock`, `thermostat`) atende várias instâncias via `device_id`.
 
 ## Variáveis de ambiente (hub)
 
@@ -142,6 +152,53 @@ curl -s -X POST http://localhost:8000/firmware \
   -F "file=@sample_fw.bin"
 ```
 
+### 7) Busca operacional no painel legado (demo)
+
+Endpoint de demonstração montado no hub: `GET /demo/search?q=<termo>`
+
+Uso normal na narrativa:
+- Busca rápida por `device_id` ou texto de eventos recentes
+- Apoio a troubleshooting interno
+
+Exemplo:
+
+```bash
+curl -s "http://localhost:8000/demo/search?q=lock_1"
+```
+
+Observação: este endpoint foi mantido com template inseguro de propósito para demonstrar comportamento anômalo.
+
+### 8) Endpoint de PoC para CVE-2023-25577 (Werkzeug multipart)
+
+Endpoint de demonstração montado no hub: `POST /demo/upload-preview`
+
+Uso normal na narrativa:
+- Endpoint de suporte para upload de formulário diagnóstico
+- Mede métricas básicas de parsing de multipart (`parse_ms`, total de campos/arquivos)
+
+Exemplo simples:
+
+```bash
+curl -s -X POST http://localhost:8000/demo/upload-preview \
+  -F "field_1=ok" \
+  -F "field_2=ok"
+```
+
+PoC controlada (baseline vs payload com muitos campos multipart):
+
+```bash
+.venv/bin/python dataset-tools/scripts/poc_cve_2023_25577.py \
+  --url http://localhost:8000/demo/upload-preview \
+  --runs 3 \
+  --baseline-fields 20 \
+  --attack-fields 12000
+```
+
+Saída esperada da PoC:
+- latência média do cliente e `parse_ms` do servidor no baseline
+- latência média e `parse_ms` no cenário de ataque
+- fator de amplificação (`x`) entre ataque e baseline
+
 ## Emitir evento a partir de um device
 
 Exemplo com light:
@@ -149,7 +206,7 @@ Exemplo com light:
 ```bash
 curl -s -X POST http://localhost:8001/emit_event \
   -H "Content-Type: application/json" \
-  -d '{"event":"motion_detected","value":{"zone":"kitchen"}}'
+  -d '{"device_id":"light_2","event":"motion_detected","value":{"zone":"kitchen"}}'
 ```
 
 ## Expor com ngrok (resumo)
@@ -161,4 +218,3 @@ ngrok http 8000
 ```
 
 Use a URL pública do ngrok para chamar endpoints do hub. Endpoints protegidos continuam exigindo `X-API-Key`.
-

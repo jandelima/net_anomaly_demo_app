@@ -28,8 +28,10 @@ import httpx
 import pandas as pd
 from nfstream import NFStreamer
 
+from common.config import build_device_inventory
 
-VALID_DEVICES = ("light_1", "lock_1", "thermostat_1")
+DEVICE_INVENTORY = build_device_inventory()
+VALID_DEVICES = tuple(DEVICE_INVENTORY.keys())
 EVENTS = ("motion_detected", "door_opened", "heartbeat", "temperature_update")
 
 
@@ -55,15 +57,17 @@ class TrafficMetrics:
 
 def build_command_payload() -> dict[str, Any]:
     device = random.choice(VALID_DEVICES)
-    if device == "light_1":
+    device_type = DEVICE_INVENTORY[device]["type"]
+
+    if device_type == "light":
         action = random.choice(("turn_on", "turn_off"))
         return {"device_id": device, "action": action}
-    if device == "lock_1":
+    if device_type == "lock":
         action = random.choice(("lock", "unlock"))
         return {"device_id": device, "action": action}
 
     temp = round(random.uniform(18.0, 26.0), 1)
-    return {"device_id": "thermostat_1", "action": "set_temp", "value": temp}
+    return {"device_id": device, "action": "set_temp", "value": temp}
 
 
 def pick_operation() -> str:

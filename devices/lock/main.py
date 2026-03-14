@@ -6,7 +6,7 @@ import time
 from typing import Any
 
 import httpx
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Query, Request
 
 from common.config import load_device_settings
 from common.logging_utils import JsonLineLogger
@@ -17,7 +17,20 @@ app = FastAPI(title="Lock Device", version="0.1.0")
 logger = JsonLineLogger(service="lock")
 started_monotonic = time.monotonic()
 request_count = 0
-state: dict[str, Any] = {"state": "locked"}
+states: dict[str, dict[str, Any]] = {}
+
+
+def ensure_device_id(device_id: str) -> str:
+    if not device_id.startswith("lock_"):
+        raise HTTPException(status_code=400, detail=f"Unsupported device_id for lock service: {device_id}")
+    return device_id
+
+
+def get_or_create_state(device_id: str) -> dict[str, Any]:
+    ensure_device_id(device_id)
+    if device_id not in states:
+        states[device_id] = {"state": "locked"}
+    return states[device_id]
 
 
 @app.middleware("http")
@@ -56,6 +69,7 @@ async def health() -> dict[str, Any]:
 async def command(command_request: DeviceCommandRequest) -> dict[str, Any]:
     started = time.perf_counter()
     await asyncio.sleep(random.uniform(0.05, 0.15))
+    state = get_or_create_state(command_request.device_id)
 
     if command_request.action == "lock":
         state["state"] = "locked"
@@ -68,6 +82,7 @@ async def command(command_request: DeviceCommandRequest) -> dict[str, Any]:
     return {
         "ok": True,
         "device_type": "lock",
+        "device_id": command_request.device_id,
         "applied_action": command_request.action,
         "new_state": dict(state),
         "processing_ms": processing_ms,
@@ -75,14 +90,17 @@ async def command(command_request: DeviceCommandRequest) -> dict[str, Any]:
 
 
 @app.get("/state")
-async def get_state() -> dict[str, Any]:
-    return {"state": dict(state)}
+async def get_state(device_id: str = Query(..., min_length=1)) -> dict[str, Any]:
+    state = get_or_create_state(device_id)
+    return {"device_id": device_id, "state": dict(state)}
 
 
 @app.post("/emit_event")
 async def emit_event(payload: DeviceEmitEventRequest) -> dict[str, Any]:
     hub_event_url = f"{settings.hub_url.rstrip('/')}/event"
-    event_payload = {"device_id": "lock_1", "event": payload.event, "value": payload.value}
+    device_id = payload.device_id or "lock_1"
+    ensure_device_id(device_id)
+    event_payload = {"device_id": device_id, "event": payload.event, "value": payload.value}
     try:
         async with httpx.AsyncClient(timeout=settings.request_timeout_seconds) as client:
             response = await client.post(hub_event_url, json=event_payload)
@@ -94,4 +112,3 @@ async def emit_event(payload: DeviceEmitEventRequest) -> dict[str, Any]:
     except ValueError:
         hub_response = {"raw": response.text}
     return {"ok": response.status_code < 400, "hub_status": response.status_code, "hub_response": hub_response}
-

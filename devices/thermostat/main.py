@@ -6,7 +6,7 @@ import time
 from typing import Any
 
 import httpx
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Query, Request
 
 from common.config import load_device_settings
 from common.logging_utils import JsonLineLogger, utc_now_iso
@@ -17,25 +17,42 @@ app = FastAPI(title="Thermostat Device", version="0.1.0")
 logger = JsonLineLogger(service="thermostat")
 started_monotonic = time.monotonic()
 request_count = 0
-state: dict[str, Any] = {
-    "temp": 22.0,
-    "mode": "off",
-    "setpoint": 22.0,
-    "humidity": 45.0,
-    "fan_speed": "auto",
-    "sensor_health": "ok",
-    "battery_pct": 96.5,
-    "last_updated": utc_now_iso(),
-}
+states: dict[str, dict[str, Any]] = {}
 
 
-def refresh_state_snapshot() -> None:
+def ensure_device_id(device_id: str) -> str:
+    if not device_id.startswith("thermostat_"):
+        raise HTTPException(status_code=400, detail=f"Unsupported device_id for thermostat service: {device_id}")
+    return device_id
+
+
+def build_initial_state() -> dict[str, Any]:
+    return {
+        "temp": 22.0,
+        "mode": "off",
+        "setpoint": 22.0,
+        "humidity": 45.0,
+        "fan_speed": "auto",
+        "sensor_health": "ok",
+        "battery_pct": 96.5,
+        "last_updated": utc_now_iso(),
+    }
+
+
+def get_or_create_state(device_id: str) -> dict[str, Any]:
+    ensure_device_id(device_id)
+    if device_id not in states:
+        states[device_id] = build_initial_state()
+    return states[device_id]
+
+
+def refresh_state_snapshot(state: dict[str, Any]) -> None:
     state["humidity"] = round(min(max(state["humidity"] + random.uniform(-0.6, 0.6), 30.0), 70.0), 1)
     state["battery_pct"] = round(max(state["battery_pct"] - random.uniform(0.0, 0.02), 0.0), 2)
     state["last_updated"] = utc_now_iso()
 
 
-def hvac_state() -> str:
+def hvac_state(state: dict[str, Any]) -> str:
     if state["mode"] == "off":
         return "idle"
     if state["mode"] == "heat":
@@ -45,10 +62,11 @@ def hvac_state() -> str:
     return "idle"
 
 
-def build_state_payload() -> dict[str, Any]:
-    refresh_state_snapshot()
+def build_state_payload(device_id: str) -> dict[str, Any]:
+    state = get_or_create_state(device_id)
+    refresh_state_snapshot(state)
     payload = dict(state)
-    payload["hvac_state"] = hvac_state()
+    payload["hvac_state"] = hvac_state(state)
     payload["recent_samples"] = [
         {"offset_s": 0, "temp": round(state["temp"], 2), "humidity": state["humidity"]},
         {"offset_s": 10, "temp": round(state["temp"] + random.uniform(-0.3, 0.3), 2), "humidity": state["humidity"]},
@@ -93,6 +111,7 @@ async def health() -> dict[str, Any]:
 async def command(command_request: DeviceCommandRequest) -> dict[str, Any]:
     started = time.perf_counter()
     await asyncio.sleep(random.uniform(0.1, 0.3))
+    state = get_or_create_state(command_request.device_id)
 
     if command_request.action != "set_temp":
         raise HTTPException(
@@ -116,11 +135,12 @@ async def command(command_request: DeviceCommandRequest) -> dict[str, Any]:
     else:
         state["mode"] = "off"
 
-    payload = build_state_payload()
+    payload = build_state_payload(command_request.device_id)
     processing_ms = round((time.perf_counter() - started) * 1000, 2)
     return {
         "ok": True,
         "device_type": "thermostat",
+        "device_id": command_request.device_id,
         "applied_action": command_request.action,
         "new_state": payload,
         "processing_ms": processing_ms,
@@ -128,14 +148,16 @@ async def command(command_request: DeviceCommandRequest) -> dict[str, Any]:
 
 
 @app.get("/state")
-async def get_state() -> dict[str, Any]:
-    return {"state": build_state_payload()}
+async def get_state(device_id: str = Query(..., min_length=1)) -> dict[str, Any]:
+    return {"device_id": device_id, "state": build_state_payload(device_id)}
 
 
 @app.post("/emit_event")
 async def emit_event(payload: DeviceEmitEventRequest) -> dict[str, Any]:
     hub_event_url = f"{settings.hub_url.rstrip('/')}/event"
-    event_payload = {"device_id": "thermostat_1", "event": payload.event, "value": payload.value}
+    device_id = payload.device_id or "thermostat_1"
+    ensure_device_id(device_id)
+    event_payload = {"device_id": device_id, "event": payload.event, "value": payload.value}
     try:
         async with httpx.AsyncClient(timeout=settings.request_timeout_seconds) as client:
             response = await client.post(hub_event_url, json=event_payload)
@@ -147,4 +169,3 @@ async def emit_event(payload: DeviceEmitEventRequest) -> dict[str, Any]:
     except ValueError:
         hub_response = {"raw": response.text}
     return {"ok": response.status_code < 400, "hub_status": response.status_code, "hub_response": hub_response}
-
