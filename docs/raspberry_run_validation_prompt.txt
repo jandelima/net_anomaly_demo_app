@@ -1,0 +1,68 @@
+Acabei de rodar uma coleta benigna de 10 minutos neste projeto. Quero que você valide os resultados dessa run exatamente como foi feito no outro ambiente.
+
+Objetivo:
+verificar se o pipeline de geração de dataset está consistente e pronto para runs longas.
+
+Faça estas validações:
+
+1. Identifique a run mais recente em `dataset-tools/output/benign_runs/` e leia:
+- `metadata.json`
+- `flows_full.csv`
+- diretório `windows/`
+
+2. Valide o flow-level:
+- conte quantos flows reais existem em `flows_full.csv` (desconsiderando header)
+- conte quantos flows reais existem somando todos os `window_*.csv`
+- verifique se os números batem
+- depois compare o conteúdo completo:
+  - cada linha de `flows_full.csv`
+  - contra a linha correspondente no `window_<start>_<end>.csv` correto
+  - usando a janela calculada a partir de `bidirectional_last_seen_ms`
+- diga explicitamente se:
+  - bateu só a contagem
+  - ou se bateu o conteúdo completo também
+
+3. Analise as janelas de 10s:
+- quantas janelas não vazias existem
+- mínimo de flows por janela
+- máximo de flows por janela
+- média de flows por janela
+- aponte se há algum comportamento estranho, como:
+  - janelas duplicadas
+  - flows fora da janela correta
+  - arquivos de janela sem correspondência com `flows_full.csv`
+
+4. Valide o app-level:
+- abra `data/app_level/hub_requests.csv`
+- use o intervalo da run a partir de `started_at` e `finished_at` do `metadata.json`
+- conte quantas linhas do app-level caem dentro desse intervalo
+- conte:
+  - total de requests
+  - total de erros
+  - total de auth failures
+  - distribuição por `path`
+- compare isso com o `generator_stdout` salvo no `metadata.json`
+- diga se está coerente
+- se houver diferença pequena, explique a causa provável
+
+5. Analise custo em disco:
+- tamanho de:
+  - `flows_full.csv`
+  - soma de `windows/*.csv`
+  - `metadata.json`
+  - `traffic_<run_id>.pcap`
+- estime o custo total da run
+- estime linearmente quanto seria para 4 horas
+- diga também quanto seria sem o `pcap`
+
+6. Me dê uma conclusão objetiva:
+- se a run está consistente
+- se o dataset flow-level está pronto para uso
+- se o app-level está coerente
+- se há algum problema que eu precise corrigir antes de rodar uma coleta longa
+
+Formato da resposta:
+- seja objetivo
+- mostre os números principais
+- se possível, use referências de arquivo clicáveis
+- não fique só dizendo “parece ok”; eu quero as checagens concretas e os motivos
