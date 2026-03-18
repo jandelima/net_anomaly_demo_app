@@ -1,0 +1,3 @@
+timestamp_ms,is_error,is_auth_failure,path,query_length,query_entropy,request_content_length,response_length,request_preview
+1773816568469,0,0,/command,0,0.0,65,272,"POST /command {""device_id"":""light_1"",""action"":""turn_on"",""request_id"":""req-001""}"
+1773816568469,0,0,/command,0,0.0,65,272,"POST /command {""device_id"":""light_1"",""action"":""turn_on"",""request_id"":""req-001""}"

@@ -1,0 +1,1 @@
+timeout 60s bash -lc 'while true; do while read -r key; do curl -s "http://localhost:8000/state?device_id=light_1" -H "X-API-Key: $key" >/dev/null; sleep 0.2; done < /home/janfilho/net_anomaly_demo_app/runtime/attacks/keys.txt; done'

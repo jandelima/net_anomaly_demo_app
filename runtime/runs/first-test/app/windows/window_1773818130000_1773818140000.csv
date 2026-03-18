@@ -1,0 +1,5 @@
+timestamp_ms,is_error,is_auth_failure,path,query_length,query_entropy,request_content_length,response_length,request_preview
+1773818134420,0,0,/events,0,0.0,0,993,GET /events?limit=10
+1773818139414,0,0,/event,0,0.0,63,11,"POST /event {""device_id"":""light_1"",""event"":""heartbeat"",""value"":{""ok"":true}}"
+1773818134420,0,0,/events,0,0.0,0,993,GET /events?limit=10
+1773818139414,0,0,/event,0,0.0,63,11,"POST /event {""device_id"":""light_1"",""event"":""heartbeat"",""value"":{""ok"":true}}"

@@ -1,0 +1,2 @@
+timestamp_ms,is_error,is_auth_failure,path,query_length,query_entropy,request_content_length,response_length,request_preview
+1773820493949,0,0,/command,0,0.0,63,275,"POST /command {""device_id"":""lock_1"",""action"":""unlock"",""request_id"":""req-002""}"

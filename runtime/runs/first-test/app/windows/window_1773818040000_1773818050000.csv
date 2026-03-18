@@ -1,0 +1,27 @@
+timestamp_ms,is_error,is_auth_failure,path,query_length,query_entropy,request_content_length,response_length,request_preview
+1773818040040,1,0,/logs,0,0.0,0,22,GET /logs
+1773818040295,1,0,/events-admin,0,0.0,0,22,GET /events-admin
+1773818040551,1,0,/firmware-admin,0,0.0,0,22,GET /firmware-admin
+1773818040805,1,0,/device,0,0.0,0,22,GET /device
+1773818041060,1,0,/devices,0,0.0,0,22,GET /devices
+1773818041315,1,0,/system,0,0.0,0,22,GET /system
+1773818041570,1,0,/systems,0,0.0,0,22,GET /systems
+1773818041824,1,0,/users,0,0.0,0,22,GET /users
+1773818042079,1,0,/auth,0,0.0,0,22,GET /auth
+1773818042335,1,0,/signin,0,0.0,0,22,GET /signin
+1773818042591,1,0,/signup,0,0.0,0,22,GET /signup
+1773818042847,1,0,/setup,0,0.0,0,22,GET /setup
+1773818043101,1,0,/wizard,0,0.0,0,22,GET /wizard
+1773818040040,1,0,/logs,0,0.0,0,22,GET /logs
+1773818040295,1,0,/events-admin,0,0.0,0,22,GET /events-admin
+1773818040551,1,0,/firmware-admin,0,0.0,0,22,GET /firmware-admin
+1773818040805,1,0,/device,0,0.0,0,22,GET /device
+1773818041060,1,0,/devices,0,0.0,0,22,GET /devices
+1773818041315,1,0,/system,0,0.0,0,22,GET /system
+1773818041570,1,0,/systems,0,0.0,0,22,GET /systems
+1773818041824,1,0,/users,0,0.0,0,22,GET /users
+1773818042079,1,0,/auth,0,0.0,0,22,GET /auth
+1773818042335,1,0,/signin,0,0.0,0,22,GET /signin
+1773818042591,1,0,/signup,0,0.0,0,22,GET /signup
+1773818042847,1,0,/setup,0,0.0,0,22,GET /setup
+1773818043101,1,0,/wizard,0,0.0,0,22,GET /wizard

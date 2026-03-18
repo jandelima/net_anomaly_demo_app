@@ -1,0 +1,13 @@
+timestamp_ms,is_error,is_auth_failure,path,query_length,query_entropy,request_content_length,response_length,request_preview
+1773817468351,1,1,/state,7,2.8074,0,55,GET /state?device_id=light_1
+1773817468632,1,1,/state,7,2.8074,0,55,GET /state?device_id=light_1
+1773817468910,1,1,/state,7,2.8074,0,55,GET /state?device_id=light_1
+1773817469186,1,1,/state,7,2.8074,0,55,GET /state?device_id=light_1
+1773817469463,1,1,/state,7,2.8074,0,55,GET /state?device_id=light_1
+1773817469737,1,1,/state,7,2.8074,0,55,GET /state?device_id=light_1
+1773817468351,1,1,/state,7,2.8074,0,55,GET /state?device_id=light_1
+1773817468632,1,1,/state,7,2.8074,0,55,GET /state?device_id=light_1
+1773817468910,1,1,/state,7,2.8074,0,55,GET /state?device_id=light_1
+1773817469186,1,1,/state,7,2.8074,0,55,GET /state?device_id=light_1
+1773817469463,1,1,/state,7,2.8074,0,55,GET /state?device_id=light_1
+1773817469737,1,1,/state,7,2.8074,0,55,GET /state?device_id=light_1

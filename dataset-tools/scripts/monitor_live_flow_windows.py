@@ -63,6 +63,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Monitor live NFStream flows into canonical raw and 10-second window CSVs.")
     parser.add_argument("--interface", default="lo")
     parser.add_argument("--output-dir", default="dataset-tools/output/runtime_flow_windows")
+    parser.add_argument("--run-dir", default=None)
     parser.add_argument("--window-seconds", type=int, default=10)
     parser.add_argument("--port-range-start", type=int, default=8000)
     parser.add_argument("--port-range-end", type=int, default=9000)
@@ -152,6 +153,7 @@ def write_metadata(metadata_path: Path, payload: dict[str, Any]) -> None:
 def monitor_live_windows(
     interface: str,
     output_dir: Path,
+    run_dir: Path | None,
     window_seconds: int,
     port_range_start: int,
     port_range_end: int,
@@ -174,7 +176,7 @@ def monitor_live_windows(
     output_dir.mkdir(parents=True, exist_ok=True)
 
     run_id = run_id or build_run_id()
-    run_dir = output_dir / run_id
+    run_dir = Path(run_dir) if run_dir else output_dir / run_id
     windows_dir = run_dir / "windows"
     flows_full_path = run_dir / "flows_full.csv"
     metadata_path = run_dir / "metadata.json"
@@ -255,6 +257,7 @@ def main(argv: list[str] | None = None) -> int:
         result = monitor_live_windows(
             interface=args.interface,
             output_dir=Path(args.output_dir),
+            run_dir=Path(args.run_dir) if args.run_dir else None,
             window_seconds=args.window_seconds,
             port_range_start=args.port_range_start,
             port_range_end=args.port_range_end,

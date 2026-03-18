@@ -18,6 +18,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Continuously split hub app-level CSV rows into fixed window CSVs.")
     parser.add_argument("--input-csv", default="data/app_level/hub_requests.csv")
     parser.add_argument("--output-dir", default="dataset-tools/output/runtime_app_windows")
+    parser.add_argument("--run-id", default=None)
+    parser.add_argument("--run-dir", default=None)
     parser.add_argument("--window-seconds", type=int, default=10)
     parser.add_argument("--poll-interval", type=float, default=2.0)
     return parser.parse_args(argv)
@@ -106,6 +108,8 @@ def read_new_rows(input_csv: Path, state: TailState) -> list[dict[str, str]]:
 def monitor_live_app_windows(
     input_csv: Path,
     output_dir: Path,
+    run_id: str | None,
+    run_dir: Path | None,
     window_seconds: int,
     poll_interval: float,
 ) -> int:
@@ -114,8 +118,8 @@ def monitor_live_app_windows(
     if poll_interval <= 0:
         raise ValueError("poll_interval must be positive")
 
-    run_id = build_run_id()
-    run_dir = output_dir / run_id
+    run_id = run_id or build_run_id()
+    run_dir = Path(run_dir) if run_dir else output_dir / run_id
     windows_dir = run_dir / "windows"
     metadata_path = run_dir / "metadata.json"
     run_dir.mkdir(parents=True, exist_ok=True)
@@ -166,6 +170,8 @@ def main(argv: list[str] | None = None) -> int:
         return monitor_live_app_windows(
             input_csv=Path(args.input_csv),
             output_dir=Path(args.output_dir),
+            run_id=args.run_id,
+            run_dir=Path(args.run_dir) if args.run_dir else None,
             window_seconds=args.window_seconds,
             poll_interval=args.poll_interval,
         )
