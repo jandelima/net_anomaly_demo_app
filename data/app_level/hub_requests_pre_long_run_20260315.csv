@@ -1,7 +1,3 @@
-window_file,prediction,processed_at
-window_1774355650000_1774355660000.csv,0,2026-03-24T12:34:31Z
-window_1774355720000_1774355730000.csv,0,2026-03-24T12:35:41Z
-window_1774355730000_1774355740000.csv,0,2026-03-24T12:35:51Z
-window_1774355740000_1774355750000.csv,0,2026-03-24T12:36:01Z
-window_1774355750000_1774355760000.csv,0,2026-03-24T12:36:11Z
-window_1774355760000_1774355770000.csv,0,2026-03-24T12:36:21Z
+timestamp_ms,is_error,is_auth_failure,path,query_length,query_entropy,request_content_length,response_length,request_preview
+1774249070696,0,0,/demo/search,12,3.1887,0,240,GET /demo/search?q=thermostat_1
+1774249073007,0,0,/demo/search,154,4.7082,0,504,GET /demo/search?q=%7b%25+for+c+in+%2
