@@ -1,0 +1,10 @@
+timestamp_ms,is_error,is_auth_failure,path,query_length,query_entropy,request_content_length,response_length,request_preview
+1774355658118,0,0,/command,0,0.0,65,272,"POST /command {""device_id"":""light_1"",""action"":""turn_on"",""request_id"":""req-001""}"
+1774355722724,0,0,/health,0,0.0,0,173,GET /health
+1774355727445,0,0,/command,0,0.0,65,271,"POST /command {""device_id"":""light_1"",""action"":""turn_on"",""request_id"":""req-001""}"
+1774355734183,0,0,/command,0,0.0,63,275,"POST /command {""device_id"":""lock_1"",""action"":""unlock"",""request_id"":""req-002""}"
+1774355743473,0,0,/command,0,0.0,84,613,"POST /command {""device_id"":""thermostat_1"",""action"":""set_temp"",""value"":22.5,""request_id"":""req-003""}"
+1774355750232,0,0,/state,12,3.1887,0,495,GET /state?device_id=thermostat_1
+1774355757795,0,0,/event,0,0.0,63,11,"POST /event {""device_id"":""light_1"",""event"":""heartbeat"",""value"":{""ok"":true}}"
+1774355761314,0,0,/events,0,0.0,0,108,GET /events?limit=10
+1774355768191,0,0,/demo/search,6,2.585,0,222,GET /demo/search?q=lock_1
